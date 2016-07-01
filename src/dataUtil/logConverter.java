@@ -22,8 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class logConverter {
 
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\*";
+    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\AIB_NF_1_062416_1440";
 
     public static void main(String[] args) throws IOException {
         try {
@@ -48,18 +46,13 @@ public class logConverter {
             while (trackerSc.hasNext()) {
                 frame = trackerSc.nextInt();
                 timeStamp = trackerSc.nextLong();
-                trackerSc.nextInt();
-                trackerSc.nextInt();
-                trackerSc.nextInt();
-
+                
                 os.writeInt(frame);
                 os.writeLong(timeStamp);
                 os.writeInt(trackerSc.nextInt());
                 os.writeInt(trackerSc.nextInt());
                 os.writeInt(trackerSc.nextInt());
-                if (frame % 30 == 0) {
-                    os.flush();
-                }
+                os.flush();
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
