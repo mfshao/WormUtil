@@ -16,12 +16,14 @@
  */
 package dataUtil;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.InputStreamReader;
 
 /**
  *
@@ -29,7 +31,8 @@ import java.util.Scanner;
  */
 public class logConverter {
 
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\AIB_NF_1_062416_1440";
+//    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\AIB_NF_1_062416_1440";
+    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
         try {
@@ -37,21 +40,27 @@ public class logConverter {
             DataOutputStream os = new DataOutputStream(new FileOutputStream(new File(trackerDatPath)));
 
             String trackerLogPath = PATH + "\\log.txt";
-            File trackerLog = new File(trackerLogPath);
-            Scanner trackerSc = new Scanner(trackerLog);
-            trackerSc.useDelimiter(" ");
+            BufferedReader trackerBr = new BufferedReader(new InputStreamReader(new FileInputStream(trackerLogPath)));
+            String logLine;
             int frame = 0;
             long timeStamp = 0;
+            int x = 0;
+            int y = 0;
+            int isMoving = 0;
 
-            while (trackerSc.hasNext()) {
-                frame = trackerSc.nextInt();
-                timeStamp = trackerSc.nextLong();
-                
+            while ((logLine = trackerBr.readLine()) != null) {
+                String[] logLineSplit = logLine.split("\\s+");
+                frame = Integer.parseInt(logLineSplit[0]);
+                timeStamp = Long.parseLong(logLineSplit[1]);
+                x = Integer.parseInt(logLineSplit[2]);
+                y = Integer.parseInt(logLineSplit[3]);
+                isMoving = Integer.parseInt(logLineSplit[4]);
+
                 os.writeInt(frame);
                 os.writeLong(timeStamp);
-                os.writeInt(trackerSc.nextInt());
-                os.writeInt(trackerSc.nextInt());
-                os.writeInt(trackerSc.nextInt());
+                os.writeInt(x);
+                os.writeInt(y);
+                os.writeInt(isMoving);
                 os.flush();
             }
         } catch (FileNotFoundException ex) {
