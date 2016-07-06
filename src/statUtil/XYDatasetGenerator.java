@@ -27,18 +27,19 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class XYDatasetGenerator {
 
-    public static XYDataset generateXYDataset(ArrayList<Integer[]> csvData) {
+    public static XYDataset generateXYDataset(ArrayList<Double[]> csvData) {
         final XYSeries centroidXY = new XYSeries("centroidXY", false);
-        final XYSeries cameraXY = new XYSeries("cameraXY", false);
-        for (Integer[] csvRow : csvData) {
+        final XYSeries turnXY = new XYSeries("turnXY", false);
+        final XYSeries timeXY = new XYSeries("timeXY", false);
+        for (Double[] csvRow : csvData) {
             centroidXY.add(csvRow[0], csvRow[1]);
-            if (csvRow[2] == 1) {
-                cameraXY.add(csvRow[0], csvRow[1]);
+            if (csvRow[2] == 1.0) {
+                turnXY.add(csvRow[0], csvRow[1]);
             }
         }
         final XYSeriesCollection xyData = new XYSeriesCollection();
         xyData.addSeries(centroidXY);
-        xyData.addSeries(cameraXY);
+        xyData.addSeries(turnXY);
         return xyData;
     }
 }

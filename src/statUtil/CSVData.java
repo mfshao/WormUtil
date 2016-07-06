@@ -30,46 +30,51 @@ public class CSVData {
 
     static class Data {
 
-        ArrayList<Integer[]> csvData;
-        int minX;
-        int maxX;
-        int minY;
-        int maxY;
+        ArrayList<Double[]> csvData;
+        Double minX;
+        Double maxX;
+        Double minY;
+        Double maxY;
+        Double maxSpd;
+        Double minSpd;
     }
 
     public static Data getCSVData(String trackerCSVLoc, String centroidCSVLoc) throws IOException {
         Data data = new Data();
         data.csvData = new ArrayList<>();
-        data.minX = 0;
-        data.maxX = 0;
-        data.minY = 0;
-        data.maxY = 0;
+        data.minX = 0.0;
+        data.maxX = 0.0;
+        data.minY = 0.0;
+        data.maxY = 0.0;
+        data.maxSpd = 0.0;
+        data.minSpd = 0.0;
 
         return getCSVData(trackerCSVLoc, centroidCSVLoc, data);
     }
 
-    private static Data getCSVData(String trackerCSVLoc, String centroidCSVLoc, Data data) throws IOException {
+    private static Data getCSVData(String trackerCSVLoc, String mfCSVLoc, Data data) throws IOException {
         try {
             CSVReader trackerCSV = new CSVReader(new FileReader(trackerCSVLoc));
-            CSVReader centroidCSV = new CSVReader(new FileReader(centroidCSVLoc));
+            CSVReader mfCSV = new CSVReader(new FileReader(mfCSVLoc));
             String[] trackerRow = null;
-            String[] centroidRow = null;
+            String[] mfRow = null;
 
-            if (((trackerRow = trackerCSV.readNext()) == null) || (centroidRow = centroidCSV.readNext()) == null) {
+            if (((trackerRow = trackerCSV.readNext()) == null) || (mfRow = mfCSV.readNext()) == null) {
                 return data;
             }
 
             while (true) {
-                if (Integer.parseInt(trackerRow[0]) < Integer.parseInt(centroidRow[0])) {
+                if (Integer.parseInt(trackerRow[0]) < Integer.parseInt(mfRow[0])) {
                     trackerRow = trackerCSV.readNext();
-                } else if (Integer.parseInt(trackerRow[0]) > Integer.parseInt(centroidRow[0])) {
-                    centroidRow = centroidCSV.readNext();
+                } else if (Integer.parseInt(trackerRow[0]) > Integer.parseInt(mfRow[0])) {
+                    mfRow = mfCSV.readNext();
                 } else {
-                    int centroidX = (int) Math.round(Double.parseDouble(centroidRow[3]));
-                    int centroidY = (int) Math.round(Double.parseDouble(centroidRow[4]));
+                    Double centroidX = Double.parseDouble(mfRow[3]);
+                    Double centroidY = Double.parseDouble(mfRow[4]);
                     boolean isMoving = Boolean.parseBoolean(trackerRow[5]);
-                    int isMovingVal = (isMoving) ? 1 : 0;
-                    data.csvData.add(new Integer[]{centroidX, centroidY, isMovingVal});
+                    Double isMovingVal = (isMoving) ? 1.0 : 0.0;
+                    Double speed = Double.parseDouble(mfRow[5]);
+                    data.csvData.add(new Double[]{centroidX, centroidY, isMovingVal, speed});
 
                     if (centroidX > data.maxX) {
                         data.maxX = centroidX;
@@ -83,10 +88,72 @@ public class CSVData {
                         data.minY = centroidY;
                     }
 
+                    if (speed > data.maxSpd) {
+                        data.maxSpd = speed;
+                    } else if (speed < data.minSpd) {
+                        data.minSpd = speed;
+                    }
+
                     trackerRow = trackerCSV.readNext();
-                    centroidRow = centroidCSV.readNext();
+                    mfRow = mfCSV.readNext();
                 }
-                if (trackerRow == null || centroidRow == null) {
+                if (trackerRow == null || mfRow == null) {
+                    break;
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return data;
+    }
+
+    public static Data getCSVData(String CSVLoc) throws IOException {
+        Data data = new Data();
+        data.csvData = new ArrayList<>();
+        data.minX = 0.0;
+        data.maxX = 0.0;
+        data.minY = 0.0;
+        data.maxY = 0.0;
+        data.maxSpd = 0.0;
+        data.minSpd = 0.0;
+
+        return getCSVData(CSVLoc, data);
+    }
+
+    private static Data getCSVData(String CSVLoc, Data data) throws IOException {
+        try {
+            CSVReader csv = new CSVReader(new FileReader(CSVLoc));
+            String[] row = null;
+            csv.readNext();
+
+            if ((row = csv.readNext()) == null) {
+                return data;
+            }
+
+            while (true) {
+                Double centroidX = Double.parseDouble(row[4]);
+                Double centroidY = Double.parseDouble(row[5]);
+                Integer isTuring = Integer.parseInt(row[12]);
+                Double isTuringVal = isTuring.doubleValue();
+                Double timeStamp = Double.parseDouble(row[2]);
+//                    Double speed = Double.parseDouble(mfRow[5]);
+                data.csvData.add(new Double[]{centroidX, centroidY, isTuringVal, timeStamp});
+
+                if (centroidX > data.maxX) {
+                    data.maxX = centroidX;
+                } else if (centroidX < data.minX) {
+                    data.minX = centroidX;
+                }
+
+                if (centroidY > data.maxY) {
+                    data.maxY = centroidY;
+                } else if (centroidY < data.minY) {
+                    data.minY = centroidY;
+                }
+
+                row = csv.readNext();
+
+                if (row == null) {
                     break;
                 }
             }
