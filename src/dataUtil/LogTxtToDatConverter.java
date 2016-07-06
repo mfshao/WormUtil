@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
  *
  * @author Travis Shao
  */
-public class LogConverter {
+public class LogTxtToDatConverter {
 
 //    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\AIB_NF_1_062416_1440";
     static String PATH = "C:\\Users\\Travis Shao\\Desktop";
