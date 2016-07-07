@@ -16,6 +16,7 @@
  */
 package statUtil;
 
+import edu.princeton.cs.algs4.StdDraw;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -23,6 +24,8 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
@@ -41,11 +44,10 @@ import statUtil.CSVData.Data;
  */
 public class TurnMovementPlot extends ApplicationFrame {
 
-//    private static final String FILE_PATH = "E:\\DePaul\\RA\\Celegans\\AIB_data\\AIB_nf1\\data";
-    private static final String FILE_PATH = "C:\\Users\\Travis Shao\\Desktop";
-//    private static final String TRACKER_CSV_LOG = FILE_PATH + "\\tracker.csv";
-//    private final String centroidCSVLoc = filePath + "\\centroid.csv";
-//    private static final String MF_CSV_LOG = FILE_PATH + "\\movementFeatures.csv";
+    private static final String FILE_PATH = "\\\\MEDIXSRV\\Nematodes\\data\\N2_nf4\\data";
+//    private static final String FILE_PATH = "D:\\WTData";
+    private static final String TRACKER_CSV_LOG = FILE_PATH + "\\tracker.csv";
+    private static final String MF_CSV_LOG = FILE_PATH + "\\movementFeatures.csv";
     private static final String TURN_CSV_LOG = FILE_PATH + "\\n2_nf4Turns_sampled_60.csv";
 
     public TurnMovementPlot(String title) throws IOException {
@@ -83,44 +85,62 @@ public class TurnMovementPlot extends ApplicationFrame {
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(width, height));
         setContentPane(chartPanel);
-        File XYChart = new File(FILE_PATH + "\\TurnMovementPlot.png");
+        File XYChart = new File(FILE_PATH + "\\TurnMovementPlotJFree.png");
         ChartUtilities.saveChartAsPNG(XYChart, chart, width, height);
     }
+//
+//    public static void main(String[] args) {
+//        try {
+//            TurnMovementPlot tmPlot = new TurnMovementPlot("TurnMovementPlot");
+//            tmPlot.pack();
+//            RefineryUtilities.centerFrameOnScreen(tmPlot);
+//            tmPlot.setVisible(true);
+//
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+//
 
     public static void main(String[] args) {
-//        try {
         try {
-            TurnMovementPlot tmPlot = new TurnMovementPlot("TurnMovementPlot");
-            tmPlot.pack();
-            RefineryUtilities.centerFrameOnScreen(tmPlot);
-            tmPlot.setVisible(true);
-//            Data data = CSVData.getCSVData(TRACKER_CSV_LOG, MF_CSV_LOG);
-//            StdDraw.setCanvasSize((int) Math.round((data.maxX - data.minX)), (int) Math.round(data.maxY - data.minY));
-//            StdDraw.setXscale(data.minX, data.maxX);
-//            StdDraw.setYscale(data.minY, data.maxY);
-//            StdDraw.setPenRadius(0.005);
-//            int i = 0;
-//            for (Double[] csvRow : data.csvData) {
-//                Double normalizedSpd = (csvRow[3] - data.minSpd) * (255.0 / (data.maxSpd - data.minSpd));
-//                if (normalizedSpd < 0.0) {
-//                    normalizedSpd = 0.0;
-//                }
-//                if (normalizedSpd > 255.0) {
-//                    normalizedSpd = 255.0;
-//                }
-//                StdDraw.setPenColor((int) Math.round(normalizedSpd), 0, 255 - (int) Math.round(normalizedSpd));
+            Data data = CSVData.getCSVData(MF_CSV_LOG);
+            StdDraw.setCanvasSize((int) Math.round(data.maxX - data.minX), (int) Math.round(data.maxY - data.minY));
+            StdDraw.setXscale(data.minX - 50, data.maxX + 50);
+            StdDraw.setYscale(data.minY - 50, data.maxY + 50);
+            StdDraw.setPenRadius(0.005);
+            int i = 0;
+            Double meanSpd = (data.maxSpd + data.minSpd) / 2;
+            Double normalizedMeanSpd = (meanSpd - data.minSpd) * (255.0 / (data.maxSpd - data.minSpd));
+            for (Double[] csvRow : data.csvData) {
+                if (i == data.csvData.size() - 1) {
+                    break;
+                }
+
+                Double[] nextRow = data.csvData.get(i + 1);
+                Double normalizedSpd = (csvRow[4] - data.minSpd) * (255.0 / (data.maxSpd - data.minSpd));
+                if (normalizedSpd < 0.0) {
+                    normalizedSpd = 0.0;
+                }
+                if (normalizedSpd > 255.0) {
+                    normalizedSpd = 255.0;
+                }
+
+                if (normalizedSpd < normalizedMeanSpd) {
+                    StdDraw.setPenColor((int) Math.round(normalizedSpd), 255, 0);
+                } else {
+                    StdDraw.setPenColor(255, 255 - (int) Math.round(normalizedSpd), 0);
+                }
+
+                StdDraw.line(csvRow[0], csvRow[1], nextRow[0], nextRow[1]);
 //                StdDraw.point(csvRow[0], csvRow[1]);
-////                StdDraw.point(1.0, 1.0);
-//                System.out.println(i);
-//                i++;
-//            }
-
+                System.out.println(i);
+                i++;
+            }
+            StdDraw.save("C:\\Users\\MSHAO1\\Desktop\\TurnMovementPlotStdDraw.png");
+            System.out.println("Finished!");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(CameraMovementPlot.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        } catch (IOException ex) {
-//            Logger.getLogger(CameraMovementPlot.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
-
 }

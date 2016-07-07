@@ -39,7 +39,7 @@ public class CSVData {
         Double minSpd;
     }
 
-    public static Data getCSVData(String trackerCSVLoc, String centroidCSVLoc) throws IOException {
+    public static Data getCSVData(String trackerCSVLoc, String mfCSVLoc) throws IOException {
         Data data = new Data();
         data.csvData = new ArrayList<>();
         data.minX = 0.0;
@@ -49,7 +49,7 @@ public class CSVData {
         data.maxSpd = 0.0;
         data.minSpd = 0.0;
 
-        return getCSVData(trackerCSVLoc, centroidCSVLoc, data);
+        return getCSVData(trackerCSVLoc, mfCSVLoc, data);
     }
 
     private static Data getCSVData(String trackerCSVLoc, String mfCSVLoc, Data data) throws IOException {
@@ -131,13 +131,14 @@ public class CSVData {
             }
 
             while (true) {
-                Double centroidX = Double.parseDouble(row[4]);
-                Double centroidY = Double.parseDouble(row[5]);
-                Integer isTuring = Integer.parseInt(row[12]);
-                Double isTuringVal = isTuring.doubleValue();
-                Double timeStamp = Double.parseDouble(row[2]);
-//                    Double speed = Double.parseDouble(mfRow[5]);
-                data.csvData.add(new Double[]{centroidX, centroidY, isTuringVal, timeStamp});
+                Double centroidX = Double.parseDouble(row[3]);
+                Double centroidY = Double.parseDouble(row[4]);
+//                Integer isTuring = Integer.parseInt(row[12]);
+//                Double isTuringVal = isTuring.doubleValue();
+                Double isTuringVal = 0.0;
+                Double timeStamp = Double.parseDouble(row[1]);
+                Double speed = Double.parseDouble(row[5]);
+                data.csvData.add(new Double[]{centroidX, centroidY, isTuringVal, timeStamp, speed});
 
                 if (centroidX > data.maxX) {
                     data.maxX = centroidX;
@@ -149,6 +150,12 @@ public class CSVData {
                     data.maxY = centroidY;
                 } else if (centroidY < data.minY) {
                     data.minY = centroidY;
+                }
+
+                if (speed > data.maxSpd) {
+                    data.maxSpd = speed;
+                } else if (speed < data.minSpd) {
+                    data.minSpd = speed;
                 }
 
                 row = csv.readNext();
