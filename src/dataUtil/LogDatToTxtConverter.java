@@ -29,8 +29,8 @@ import java.io.IOException;
  */
 public class LogDatToTxtConverter {
 
-//    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\AIB_NF_1_062416_1440";
-    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
+    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\_high_resolution\\AIB_NF_1_062416_1440";
+//    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
         try {
