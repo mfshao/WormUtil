@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 import statUtil.CSVData.Data;
 
 /**
@@ -62,15 +63,22 @@ public class CameraMovementPlot extends ApplicationFrame {
 //        ChartUtilities.saveChartAsJPEG(XYChart, chart, width, height);
     }
 
-    public static void main(String[] args) {
-        try {
-            //        try {
+//    public static void main(String[] args) {
+//        try {
 //            CameraMovementPlot cmPlot = new CameraMovementPlot("CameraMovementPlot");
 //            cmPlot.pack();
 //            RefineryUtilities.centerFrameOnScreen(cmPlot);
 //            cmPlot.setVisible(true);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
+    public static void main(String[] args) {
+        try {
+
             Data data = CSVData.getCSVData(TRACKER_CSV_LOG, MF_CSV_LOG);
-            StdDraw.setCanvasSize((int) Math.round((data.maxX - data.minX)), (int) Math.round(data.maxY - data.minY));
+            StdDraw.setCanvasSize((int) Math.round(data.maxX - data.minX) / 2, (int) Math.round(data.maxY - data.minY) / 2);
             StdDraw.setXscale(data.minX, data.maxX);
             StdDraw.setYscale(data.minY, data.maxY);
             StdDraw.setPenRadius(0.005);
@@ -83,19 +91,14 @@ public class CameraMovementPlot extends ApplicationFrame {
                 if (normalizedSpd > 255.0) {
                     normalizedSpd = 255.0;
                 }
-                StdDraw.setPenColor((int) Math.round(normalizedSpd), 0, 255 - (int) Math.round(normalizedSpd));
-                StdDraw.point(csvRow[0], csvRow[1]);
+                StdDraw.setPenColor((int) Math.round(normalizedSpd), 255 - (int) Math.round(normalizedSpd), 0);
+                StdDraw.point(csvRow[0] / 2, csvRow[1] / 2);
 //                StdDraw.point(1.0, 1.0);
                 System.out.println(i);
                 i++;
             }
-
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
         } catch (IOException ex) {
             Logger.getLogger(CameraMovementPlot.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

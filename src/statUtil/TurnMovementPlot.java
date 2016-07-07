@@ -16,15 +16,13 @@
  */
 package statUtil;
 
-import edu.princeton.cs.algs4.StdDraw;
+import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Shape;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
@@ -60,11 +58,12 @@ public class TurnMovementPlot extends ApplicationFrame {
                 XYDatasetGenerator.generateXYDataset(data.csvData));
         final XYPlot xyPlot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesStroke(0, new BasicStroke(3f));
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
         renderer.setSeriesLinesVisible(1, false);
         renderer.setSeriesShapesVisible(1, true);
-        Shape cross = ShapeUtilities.createDiagonalCross(0.5f, 0.2f);
+        Shape cross = ShapeUtilities.createDiagonalCross(2f, 0.5f);
         renderer.setSeriesShape(1, cross);
         xyPlot.setRenderer(renderer);
         xyPlot.setQuadrantOrigin(new Point(0, 0));
@@ -73,7 +72,7 @@ public class TurnMovementPlot extends ApplicationFrame {
         for (Double[] csvRow : data.csvData) {
             if (i % 20 == 1) {
                 final XYTextAnnotation annotation = new XYTextAnnotation(Double.toString(csvRow[3]), csvRow[0], csvRow[1]);
-                annotation.setFont(new Font("SansSerif", Font.PLAIN, 7));
+                annotation.setFont(new Font("SansSerif", Font.PLAIN, 10));
                 xyPlot.addAnnotation(annotation);
             }
             i++;
@@ -84,8 +83,8 @@ public class TurnMovementPlot extends ApplicationFrame {
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(width, height));
         setContentPane(chartPanel);
-        File XYChart = new File(FILE_PATH + "\\TurnMovementPlot.jpeg");
-        ChartUtilities.saveChartAsJPEG(XYChart, chart, width, height);
+        File XYChart = new File(FILE_PATH + "\\TurnMovementPlot.png");
+        ChartUtilities.saveChartAsPNG(XYChart, chart, width, height);
     }
 
     public static void main(String[] args) {
