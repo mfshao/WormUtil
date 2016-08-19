@@ -31,7 +31,7 @@ import java.io.InputStreamReader;
  */
 public class LogTxtToDatConverter {
 
-    static String PATH = "D:\\AIB_NF_1_070616_0935";
+    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\che2_HR_f4\\log";
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
