@@ -131,22 +131,23 @@ public class CameraMovementAnalysis {
         }
         //double[] doubles = Arrays.stream(count).asDoubleStream().toArray();
         double[] doubles = new double[max + 1];
-//        System.out.println("========== Statistics result of " + s + " ==========");
+        System.out.println("========== Statistics result of " + s + " ==========");
         for (int j = 0; j < divide.length; j++) {
 //            if (divide[j] != 0) {
 //                doubles[j] = (double) count[j] / (double) divide[j];
 //            } 
             doubles[j] = (double) count[j] / total * 100.0;
-//            System.out.print(doubles[j] + " ");
+//            System.out.print(count[j]+ " "+ doubles[j] + " ; " );
         }
+        System.out.print(total);
         System.out.println();
 
-//        DescriptiveStatistics ds = new DescriptiveStatistics(Arrays.copyOfRange(doubles, 1, 13));
-//        System.out.println("========== Statistics result of " + s + " ==========");
-//        System.out.println("Mean: " + ds.getMean() + ", Stddev: " + ds.getStandardDeviation() + ", Kurtosis: " + ds.getKurtosis() + ", Skew: " + ds.getSkewness());
-//        System.out.println("============================================");
-//        System.out.println();
-//        System.out.println();
+        DescriptiveStatistics ds = new DescriptiveStatistics(Arrays.copyOfRange(doubles, 1, 13));
+        System.out.println("========== Statistics result of " + s + " ==========");
+        System.out.println("Mean: " + ds.getMean() + ", Stddev: " + ds.getStandardDeviation() + ", Kurtosis: " + ds.getKurtosis() + ", Skew: " + ds.getSkewness());
+        System.out.println("============================================");
+        System.out.println();
+        System.out.println();
 
         BarChartMC.setData(doubles, s);
         Application.launch(BarChartMC.class);
@@ -161,7 +162,7 @@ public class CameraMovementAnalysis {
 //        String[] fileNames = {"CHE2_HR_NF"};
 
 //        String[] fileNames = {"AIB_LR_NF", "AIB_HR_NF", "AIB_HR_F"};
-        String[] fileNames = {"AIB_HR_F"};
+        String[] fileNames = {"AIB_HR_NF"};
         for (String s : fileNames) {
             Result result = readCSV("C:\\Users\\MSHAO1\\Desktop\\" + s + ".csv");
             ArrayList<int[]> resultList = result.getResultList();

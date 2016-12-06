@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 public class LogDatToTxtConverter {
 
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\N2_f9\\log";
+    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\che2_nf3\\log";
 //    static String PATH = "D:\\OTPT";
 
     public static void main(String[] args) throws IOException {
