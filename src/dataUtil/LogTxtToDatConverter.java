@@ -31,41 +31,51 @@ import java.io.InputStreamReader;
  */
 public class LogTxtToDatConverter {
 
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\che2_nf3\\log";
+    //static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\AIB_HR_nf11\\log";
+    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\*****\\log";
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
-        try {
-            String trackerDatPath = PATH + "\\log.dat";
-            DataOutputStream os = new DataOutputStream(new FileOutputStream(new File(trackerDatPath)));
+        String catagories = "che2_HR_f";
+        int startFrame = 0;
+        int numInCat = 10;
 
-            String trackerLogPath = PATH + "\\log.txt";
-            BufferedReader trackerBr = new BufferedReader(new InputStreamReader(new FileInputStream(trackerLogPath)));
-            String logLine;
-            int frame = 0;
-            long timeStamp = 0;
-            int x = 0;
-            int y = 0;
-            int isMoving = 0;
+        for (int i = 1; i <= numInCat; i++) {
+            String c = catagories + Integer.toString(i);
+            String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
+            String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";
+            try {
+                DataOutputStream os = new DataOutputStream(new FileOutputStream(new File(trackerDatPath)));
 
-            while ((logLine = trackerBr.readLine()) != null) {
-                String[] logLineSplit = logLine.split("\\s+");
-                frame = Integer.parseInt(logLineSplit[0]);
-                timeStamp = Long.parseLong(logLineSplit[1]);
-                x = Integer.parseInt(logLineSplit[2]);
-                y = Integer.parseInt(logLineSplit[3]);
-                isMoving = Integer.parseInt(logLineSplit[4]);
+                BufferedReader trackerBr = new BufferedReader(new InputStreamReader(new FileInputStream(trackerLogPath)));
+                String logLine;
+                int frame = 0;
+                long timeStamp = 0;
+                int x = 0;
+                int y = 0;
+                int isMoving = 0;
 
-                os.writeInt(frame);
-                os.writeLong(timeStamp);
-                os.writeInt(x);
-                os.writeInt(y);
-                os.writeInt(isMoving);
-                os.flush();
-//                System.out.println(frame);
+                while ((logLine = trackerBr.readLine()) != null) {
+                    String[] logLineSplit = logLine.split("\\s+");
+                    frame = Integer.parseInt(logLineSplit[0]);
+                    timeStamp = Long.parseLong(logLineSplit[1]);
+                    x = Integer.parseInt(logLineSplit[2]);
+                    y = Integer.parseInt(logLineSplit[3]);
+                    isMoving = Integer.parseInt(logLineSplit[4]);
+
+                    os.writeInt(frame);
+                    os.writeLong(timeStamp);
+                    os.writeInt(x);
+                    os.writeInt(y);
+                    os.writeInt(isMoving);
+                    os.flush(); 
+ //               System.out.println(frame);
+                }
+                System.out.println(c + " has finished TXT to DAT parsing");
+                os.close();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
         }
     }
 }

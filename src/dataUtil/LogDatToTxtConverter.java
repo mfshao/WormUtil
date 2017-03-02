@@ -29,15 +29,22 @@ import java.io.IOException;
  */
 public class LogDatToTxtConverter {
 
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\che2_nf3\\log";
+    //static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\AIY_HR_nf4\\log";
+    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\*****\\log";
 //    static String PATH = "D:\\OTPT";
 
     public static void main(String[] args) throws IOException {
+        String catagories = "che2_f";
+        int startFrame = 0;
+        int numInCat = 10;
+        
+        for (int i = 1; i <= numInCat; i++) {
+            String c = catagories + Integer.toString(i);
+            String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
+            String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";
         try {
-            String trackerDatPath = PATH + "\\log.dat";
             DataInputStream is = new DataInputStream(new FileInputStream(new File(trackerDatPath)));
 
-            String trackerLogPath = PATH + "\\log.txt";
             FileWriter fw = new FileWriter(trackerLogPath);
             int frame = 0;
             long timeStamp = 0;
@@ -54,9 +61,11 @@ public class LogDatToTxtConverter {
 
                 fw.write(String.format("%07d %d %d %d %d%n", frame, timeStamp, x, y, isMoving));
             }
+            System.out.println(c + " has finished DAT to TXT parsing");
             fw.close();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
+    }
     }
 }
