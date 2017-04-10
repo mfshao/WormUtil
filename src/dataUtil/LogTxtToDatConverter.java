@@ -36,7 +36,7 @@ public class LogTxtToDatConverter {
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
-        String catagories = "che2_HR_f";
+        String catagories = "che2_nf";
         int startFrame = 0;
         int numInCat = 10;
 

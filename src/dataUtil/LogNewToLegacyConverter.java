@@ -141,11 +141,11 @@ public class LogNewToLegacyConverter {
     }
 
     public static void main(String[] args) throws IOException {
-        String catagories = "AIY_HR_nf";
+        String catagories = "AIB_nf";
         int startFrame = 0;
-        int numInCat = 6;
+        int numInCat = 5;
 
-        for (int i = 1; i <= numInCat; i++) {
+        for (int i = 3; i <= numInCat; i++) {
             String c = catagories + Integer.toString(i);
             String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
             String trackerLegacyLogPath = PATH.replace("*****", c) + "\\log.log";
