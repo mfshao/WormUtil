@@ -34,11 +34,11 @@ public class LogDatToTxtConverter {
 //    static String PATH = "D:\\OTPT";
 
     public static void main(String[] args) throws IOException {
-        String catagories = "che2_nf";
-        int startFrame = 0;
-        int numInCat = 2;
+        String catagories = "N2_f";
+        int startFrame = 5;
+        int numInCat = 10;
         
-        for (int i = 2; i <= numInCat; i++) {
+        for (int i = startFrame; i <= numInCat; i++) {
             String c = catagories + Integer.toString(i);
             String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
             String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";

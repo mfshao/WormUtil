@@ -33,6 +33,7 @@ public class LogPostureAnnotation {
     
     public static void main(String[] args) {
         try {
+            
             PostureCSVData.Data data = PostureCSVData.getCSVData(FILE_NAME);
             System.out.println();
             CSVWriter csv = new CSVWriter(new FileWriter(OUT_FILE_NAME));
