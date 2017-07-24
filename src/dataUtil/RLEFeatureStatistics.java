@@ -168,7 +168,7 @@ public class RLEFeatureStatistics {
             List<RLEFeatureDataArray> rlefList = new ArrayList();
             String[] annotations = {"Forward-NTD", "Forward-Shallow", "Forward-Sharp", "Backward-ReverseShort", "Backward-ReverseLong", "Stopped-Stop", "Stopped-ReverseShort", "Stopped-ReverseLong"};
 
-            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures.csv"), ',');
+            CSVReader csv = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_RLEFeatures.csv"), ',');
             String[] row;
             while ((row = csv.readNext()) != null) {
                 String title = row[0];
@@ -295,118 +295,194 @@ public class RLEFeatureStatistics {
                 maxList.add(Double.toString(stats.getMax()));
             }
 
-             CSVReader csvr = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures.csv"), ',');
-//            CSVWriter csvw = new CSVWriter(new FileWriter("D:\\ContourAndSkel_output_RLEFeatures_MinMax.csv"), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
-//            String[] line = minList.toArray(new String[0]);
-//            csvw.writeNext(line);
-//            line = maxList.toArray(new String[0]);
-//            csvw.writeNext(line);
-//            while ((line = csvr.readNext()) != null) {
-//                csvw.writeNext(line);
-//            }
+            CSVReader csvr = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_RLEFeatures.csv"), ',');
+            CSVWriter csvw = new CSVWriter(new FileWriter("D:\\Smooth_N2_nf4_RLEFeatures_MinMax.csv"), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+            String[] line = minList.toArray(new String[0]);
+            csvw.writeNext(line);
+            line = maxList.toArray(new String[0]);
+            csvw.writeNext(line);
+            while ((line = csvr.readNext()) != null) {
+                csvw.writeNext(line);
+            }
+            csvw.close();
+            csvr.close();
 
         } catch (IOException ex) {
             Logger.getLogger(RLEFeatureKMPPClustering.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public static void performCombinedStatistics() {
+    public static void performCombinedStopStatistics() {
         try {
             List<RLEFeatureDataArray> rlefList = new ArrayList();
             String[] annotations = {"Forward", "ReverseShort", "ReverseLong", "Stop"};
 
-            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures.csv"), ',');
+            CSVReader csv = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_subs_RLEFeatures.csv"), ',');
             String[] row;
 
-            HashMap<String, ArrayList<Double>> hm = new HashMap<>();
+//            HashMap<String, ArrayList<Double>> hm = new HashMap<>();
 
             while ((row = csv.readNext()) != null) {
                 String title = row[0];
-                if (title.contains("ReverseShort")) {
-                    title = "ReverseShort";
-                }
-                if (title.contains("ReverseLong")) {
-                    title = "ReverseLong";
-                }
-                if (title.contains("Forward")) {
-                    title = "Forward";
-                }
-                if (title.equalsIgnoreCase("Stopped-Stop")) {
+                if (title.contains("Stopped")) {
                     title = "Stop";
+                } else if (title.contains("ReverseShort")) {
+                    title = "ReverseShort";
+                } else if (title.contains("ReverseLong")) {
+                    title = "ReverseLong";
+                } else if (title.contains("Forward")) {
+                    title = "Forward";
                 }
                 RLEFeatureDataArray rlefda = new RLEFeatureDataArray(title, Double.parseDouble(row[1]), Double.parseDouble(row[2]), Double.parseDouble(row[3]), Double.parseDouble(row[4]), Double.parseDouble(row[5]), Double.parseDouble(row[6]), Double.parseDouble(row[7]), Double.parseDouble(row[8]), Double.parseDouble(row[9]), Double.parseDouble(row[10]), Double.parseDouble(row[11]));
                 rlefList.add(rlefda);
             }
+            
+             ArrayList<ArrayList<Double>> featureList = new ArrayList();
+            ArrayList<Double> sreList = new ArrayList();
+            ArrayList<Double> lreList = new ArrayList();
+            ArrayList<Double> lareList = new ArrayList();
+            ArrayList<Double> hareList = new ArrayList();
+            ArrayList<Double> srlaeList = new ArrayList();
+            ArrayList<Double> srhaeList = new ArrayList();
+            ArrayList<Double> lrlaeList = new ArrayList();
+            ArrayList<Double> lrhaeList = new ArrayList();
+            ArrayList<Double> alnList = new ArrayList();
+            ArrayList<Double> rlnList = new ArrayList();
+            ArrayList<Double> rpList = new ArrayList();
 
-            for (String a : annotations) {
-                ArrayList<ArrayList<Double>> featureList = new ArrayList();
-                ArrayList<Double> sreList = new ArrayList();
-                ArrayList<Double> lreList = new ArrayList();
-                ArrayList<Double> lareList = new ArrayList();
-                ArrayList<Double> hareList = new ArrayList();
-                ArrayList<Double> srlaeList = new ArrayList();
-                ArrayList<Double> srhaeList = new ArrayList();
-                ArrayList<Double> lrlaeList = new ArrayList();
-                ArrayList<Double> lrhaeList = new ArrayList();
-                ArrayList<Double> alnList = new ArrayList();
-                ArrayList<Double> rlnList = new ArrayList();
-                ArrayList<Double> rpList = new ArrayList();
+            for (RLEFeatureDataArray rlefda : rlefList) {
+                sreList.add(rlefda.getSRE());
+                lreList.add(rlefda.getLRE());
+                lareList.add(rlefda.getLARE());
+                hareList.add(rlefda.getHARE());
+                srlaeList.add(rlefda.getSRLAE());
+                srhaeList.add(rlefda.getSRHAE());
+                lrlaeList.add(rlefda.getLRLAE());
+                lrhaeList.add(rlefda.getLRHAE());
+                alnList.add(rlefda.getALN());
+                rlnList.add(rlefda.getRLN());
+                rpList.add(rlefda.getRP());
+            }
+            featureList.add(sreList);
+            featureList.add(lreList);
+            featureList.add(lareList);
+            featureList.add(hareList);
+            featureList.add(srlaeList);
+            featureList.add(srhaeList);
+            featureList.add(lrlaeList);
+            featureList.add(lrhaeList);
+            featureList.add(alnList);
+            featureList.add(rlnList);
+            featureList.add(rpList);
 
-                for (RLEFeatureDataArray rlefda : rlefList) {
-                    if (rlefda.getTitle().equalsIgnoreCase(a)) {
-                        sreList.add(rlefda.getSRE());
-                        lreList.add(rlefda.getLRE());
-                        lareList.add(rlefda.getLARE());
-                        hareList.add(rlefda.getHARE());
-                        srlaeList.add(rlefda.getSRLAE());
-                        srhaeList.add(rlefda.getSRHAE());
-                        lrlaeList.add(rlefda.getLRLAE());
-                        lrhaeList.add(rlefda.getLRHAE());
-                        alnList.add(rlefda.getALN());
-                        rlnList.add(rlefda.getRLN());
-                        rpList.add(rlefda.getRP());
-                    }
-                }
-                featureList.add(sreList);
-                featureList.add(lreList);
-                featureList.add(lareList);
-                featureList.add(hareList);
-                featureList.add(srlaeList);
-                featureList.add(srhaeList);
-                featureList.add(lrlaeList);
-                featureList.add(lrhaeList);
-                featureList.add(alnList);
-                featureList.add(rlnList);
-                featureList.add(rpList);
+            ArrayList<String> minList = new ArrayList<>();
+            minList.add("Min");
+            ArrayList<String> maxList = new ArrayList<>();
+            maxList.add("Max");
 
-                System.out.println(a);
+            for (ArrayList<Double> feature : featureList) {
+                DescriptiveStatistics stats = new DescriptiveStatistics();
 
-                hm.put(a, hareList);
-
-                for (ArrayList<Double> feature : featureList) {
-                    DescriptiveStatistics stats = new DescriptiveStatistics();
-
-                    Double[] inputArray = new Double[feature.size()];
-                    inputArray = feature.toArray(inputArray);
-                    for (int i = 0; i < inputArray.length; i++) {
-                        stats.addValue(inputArray[i]);
-                    }
-
-                    System.out.println(stats.getMin());
-                    System.out.println(stats.getMean());
-                    System.out.println(stats.getMax());
-                    System.out.println(stats.getStandardDeviation());
-                    System.out.println();
+                Double[] inputArray = new Double[feature.size()];
+                inputArray = feature.toArray(inputArray);
+                for (int i = 0; i < inputArray.length; i++) {
+                    stats.addValue(inputArray[i]);
                 }
 
-                System.out.println("=========================================");
-                System.out.println();
+                minList.add(Double.toString(stats.getMin()));
+                maxList.add(Double.toString(stats.getMax()));
             }
 
-            RLEFeatureBoxPlot bp = new RLEFeatureBoxPlot("HARE S2 Box Plot", hm);
-            bp.pack();
-            RefineryUtilities.centerFrameOnScreen(bp);
-            bp.setVisible(true);
+            CSVReader csvr = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_subs_RLEFeatures.csv"), ',');
+            CSVWriter csvw = new CSVWriter(new FileWriter("D:\\Smooth_N2_nf4_subs_RLEFeatures_CombinedStop_MinMax.csv"), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+            String[] line = minList.toArray(new String[0]);
+            csvw.writeNext(line);
+            line = maxList.toArray(new String[0]);
+            csvw.writeNext(line);
+            while ((line = csvr.readNext()) != null) {
+                if (line[0].contains("Stopped")) {
+                    line[0] = "Stop";
+                } else if (line[0].contains("ReverseShort")) {
+                    line[0] = "ReverseShort";
+                } else if (line[0].contains("ReverseLong")) {
+                    line[0] = "ReverseLong";
+                } else if (line[0].contains("Forward")) {
+                    line[0] = "Forward";
+                }
+                csvw.writeNext(line);
+            }
+            csvw.close();
+            csvr.close();
+
+//            for (String a : annotations) {
+//                ArrayList<ArrayList<Double>> featureList = new ArrayList();
+//                ArrayList<Double> sreList = new ArrayList();
+//                ArrayList<Double> lreList = new ArrayList();
+//                ArrayList<Double> lareList = new ArrayList();
+//                ArrayList<Double> hareList = new ArrayList();
+//                ArrayList<Double> srlaeList = new ArrayList();
+//                ArrayList<Double> srhaeList = new ArrayList();
+//                ArrayList<Double> lrlaeList = new ArrayList();
+//                ArrayList<Double> lrhaeList = new ArrayList();
+//                ArrayList<Double> alnList = new ArrayList();
+//                ArrayList<Double> rlnList = new ArrayList();
+//                ArrayList<Double> rpList = new ArrayList();
+//
+//                for (RLEFeatureDataArray rlefda : rlefList) {
+//                    if (rlefda.getTitle().equalsIgnoreCase(a)) {
+//                        sreList.add(rlefda.getSRE());
+//                        lreList.add(rlefda.getLRE());
+//                        lareList.add(rlefda.getLARE());
+//                        hareList.add(rlefda.getHARE());
+//                        srlaeList.add(rlefda.getSRLAE());
+//                        srhaeList.add(rlefda.getSRHAE());
+//                        lrlaeList.add(rlefda.getLRLAE());
+//                        lrhaeList.add(rlefda.getLRHAE());
+//                        alnList.add(rlefda.getALN());
+//                        rlnList.add(rlefda.getRLN());
+//                        rpList.add(rlefda.getRP());
+//                    }
+//                }
+//                featureList.add(sreList);
+//                featureList.add(lreList);
+//                featureList.add(lareList);
+//                featureList.add(hareList);
+//                featureList.add(srlaeList);
+//                featureList.add(srhaeList);
+//                featureList.add(lrlaeList);
+//                featureList.add(lrhaeList);
+//                featureList.add(alnList);
+//                featureList.add(rlnList);
+//                featureList.add(rpList);
+//
+//                System.out.println(a);
+//
+//                hm.put(a, hareList);
+//
+//                for (ArrayList<Double> feature : featureList) {
+//                    DescriptiveStatistics stats = new DescriptiveStatistics();
+//
+//                    Double[] inputArray = new Double[feature.size()];
+//                    inputArray = feature.toArray(inputArray);
+//                    for (int i = 0; i < inputArray.length; i++) {
+//                        stats.addValue(inputArray[i]);
+//                    }
+//
+//                    System.out.println(stats.getMin());
+//                    System.out.println(stats.getMean());
+//                    System.out.println(stats.getMax());
+//                    System.out.println(stats.getStandardDeviation());
+//                    System.out.println();
+//                }
+//
+//                System.out.println("=========================================");
+//                System.out.println();
+//            }
+//
+//            RLEFeatureBoxPlot bp = new RLEFeatureBoxPlot("HARE S2 Box Plot", hm);
+//            bp.pack();
+//            RefineryUtilities.centerFrameOnScreen(bp);
+//            bp.setVisible(true);
 
         } catch (IOException ex) {
             Logger.getLogger(RLEFeatureKMPPClustering.class.getName()).log(Level.SEVERE, null, ex);
@@ -505,10 +581,160 @@ public class RLEFeatureStatistics {
             Logger.getLogger(RLEFeatureKMPPClustering.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public static void performRLE() {
+        try {
+            List<RLEFeatureDataArray> rlefList = new ArrayList();
+            String[] annotations = {"Forward-NTD", "Forward-Shallow", "Forward-Sharp", "Backward-ReverseShort", "Backward-ReverseLong", "Stopped-Stop", "Stopped-ReverseShort", "Stopped-ReverseLong"};
+
+            CSVReader csv = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_subs_RLEFeatures.csv"), ',');
+            String[] row;
+            while ((row = csv.readNext()) != null) {
+                String title = row[0];
+                RLEFeatureDataArray rlefda = new RLEFeatureDataArray(row[0], Double.parseDouble(row[1]), Double.parseDouble(row[2]), Double.parseDouble(row[3]), Double.parseDouble(row[4]), Double.parseDouble(row[5]), Double.parseDouble(row[6]), Double.parseDouble(row[7]), Double.parseDouble(row[8]), Double.parseDouble(row[9]), Double.parseDouble(row[10]), Double.parseDouble(row[11]));
+                rlefList.add(rlefda);
+            }
+//
+//            for (String a : annotations) {
+//                ArrayList<ArrayList<Double>> featureList = new ArrayList();
+//                ArrayList<Double> sreList = new ArrayList();
+//                ArrayList<Double> lreList = new ArrayList();
+//                ArrayList<Double> lareList = new ArrayList();
+//                ArrayList<Double> hareList = new ArrayList();
+//                ArrayList<Double> srlaeList = new ArrayList();
+//                ArrayList<Double> srhaeList = new ArrayList();
+//                ArrayList<Double> lrlaeList = new ArrayList();
+//                ArrayList<Double> lrhaeList = new ArrayList();
+//                ArrayList<Double> alnList = new ArrayList();
+//                ArrayList<Double> rlnList = new ArrayList();
+//                ArrayList<Double> rpList = new ArrayList();
+//
+//                for (RLEFeatureDataArray rlefda : rlefList) {
+//                    if (rlefda.getTitle().equalsIgnoreCase(a)) {
+//                        sreList.add(rlefda.getSRE());
+//                        lreList.add(rlefda.getLRE());
+//                        lareList.add(rlefda.getLARE());
+//                        hareList.add(rlefda.getHARE());
+//                        srlaeList.add(rlefda.getSRLAE());
+//                        srhaeList.add(rlefda.getSRHAE());
+//                        lrlaeList.add(rlefda.getLRLAE());
+//                        lrhaeList.add(rlefda.getLRHAE());
+//                        alnList.add(rlefda.getALN());
+//                        rlnList.add(rlefda.getRLN());
+//                        rpList.add(rlefda.getRP());
+//                    }
+//                }
+//                featureList.add(sreList);
+//                featureList.add(lreList);
+//                featureList.add(lareList);
+//                featureList.add(hareList);
+//                featureList.add(srlaeList);
+//                featureList.add(srhaeList);
+//                featureList.add(lrlaeList);
+//                featureList.add(lrhaeList);
+//                featureList.add(alnList);
+//                featureList.add(rlnList);
+//                featureList.add(rpList);
+//
+//                System.out.println(a);
+//
+//                for (ArrayList<Double> feature : featureList) {
+//                    DescriptiveStatistics stats = new DescriptiveStatistics();
+//
+//                    Double[] inputArray = new Double[feature.size()];
+//                    inputArray = feature.toArray(inputArray);
+//                    for (int i = 0; i < inputArray.length; i++) {
+//                        stats.addValue(inputArray[i]);
+//                    }
+//
+//                    System.out.println(stats.getMin());
+//                    System.out.println(stats.getMean());
+//                    System.out.println(stats.getMax());
+//                    System.out.println(stats.getStandardDeviation());
+//                    System.out.println();
+//                }
+//
+//                System.out.println("=========================================");
+//                System.out.println();
+//            }
+
+            ArrayList<ArrayList<Double>> featureList = new ArrayList();
+            ArrayList<Double> sreList = new ArrayList();
+            ArrayList<Double> lreList = new ArrayList();
+            ArrayList<Double> lareList = new ArrayList();
+            ArrayList<Double> hareList = new ArrayList();
+            ArrayList<Double> srlaeList = new ArrayList();
+            ArrayList<Double> srhaeList = new ArrayList();
+            ArrayList<Double> lrlaeList = new ArrayList();
+            ArrayList<Double> lrhaeList = new ArrayList();
+            ArrayList<Double> alnList = new ArrayList();
+            ArrayList<Double> rlnList = new ArrayList();
+            ArrayList<Double> rpList = new ArrayList();
+
+            for (RLEFeatureDataArray rlefda : rlefList) {
+                sreList.add(rlefda.getSRE());
+                lreList.add(rlefda.getLRE());
+                lareList.add(rlefda.getLARE());
+                hareList.add(rlefda.getHARE());
+                srlaeList.add(rlefda.getSRLAE());
+                srhaeList.add(rlefda.getSRHAE());
+                lrlaeList.add(rlefda.getLRLAE());
+                lrhaeList.add(rlefda.getLRHAE());
+                alnList.add(rlefda.getALN());
+                rlnList.add(rlefda.getRLN());
+                rpList.add(rlefda.getRP());
+            }
+            featureList.add(sreList);
+            featureList.add(lreList);
+            featureList.add(lareList);
+            featureList.add(hareList);
+            featureList.add(srlaeList);
+            featureList.add(srhaeList);
+            featureList.add(lrlaeList);
+            featureList.add(lrhaeList);
+            featureList.add(alnList);
+            featureList.add(rlnList);
+            featureList.add(rpList);
+
+            ArrayList<String> minList = new ArrayList<>();
+            minList.add("Min");
+            ArrayList<String> maxList = new ArrayList<>();
+            maxList.add("Max");
+
+            for (ArrayList<Double> feature : featureList) {
+                DescriptiveStatistics stats = new DescriptiveStatistics();
+
+                Double[] inputArray = new Double[feature.size()];
+                inputArray = feature.toArray(inputArray);
+                for (int i = 0; i < inputArray.length; i++) {
+                    stats.addValue(inputArray[i]);
+                }
+
+                minList.add(Double.toString(stats.getMin()));
+                maxList.add(Double.toString(stats.getMax()));
+            }
+
+            CSVReader csvr = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_subs_RLEFeatures.csv"), ',');
+            CSVWriter csvw = new CSVWriter(new FileWriter("D:\\Smooth_N2_nf4_subs_RLEFeatures_MinMax.csv"), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+            String[] line = minList.toArray(new String[0]);
+            csvw.writeNext(line);
+            line = maxList.toArray(new String[0]);
+            csvw.writeNext(line);
+            while ((line = csvr.readNext()) != null) {
+                csvw.writeNext(line);
+            }
+            csvw.close();
+            csvr.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(RLEFeatureKMPPClustering.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static void main(String[] args) {
 //        performAllStatistics();
-        performCombinedStatistics();
+        performCombinedStopStatistics();
 //        performCombinedNoStopStatistics();
+//        performRLE();
     }
 }

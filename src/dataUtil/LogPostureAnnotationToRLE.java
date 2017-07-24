@@ -30,8 +30,8 @@ import java.util.logging.Logger;
  */
 public class LogPostureAnnotationToRLE {
 
-    private static final String IN_FILE_NAME = "D:\\Smooth_N2_nf4.csv";
-    private static final String OUT_FILE_NAME = "D:\\Smooth_N2_nf4_RLEFeatures.csv";
+    private static final String IN_FILE_NAME = "D:\\Smooth_N2_nf4_subs.csv";
+    private static final String OUT_FILE_NAME = "D:\\Smooth_N2_nf4_subs_RLEFeatures.csv";
     private static final String[] STATES = {"Forward-NTD", "Forward-Sharp", "Forward-Shallow", "Backward-ReverseShort", "Backward-ReverseLong", "Stopped-ReverseShort", "Stopped-ReverseLong", "Stopped-Stop"};
 
     private static ArrayList<PostureAnnotation> loadData() {
@@ -91,9 +91,9 @@ public class LogPostureAnnotationToRLE {
         ArrayList<RLEFeature> rleFeatureList = new ArrayList();
         ArrayList<PostureAnnotation> csvData = loadData();
         
-        for (PostureAnnotation pa : csvData) {
-            System.out.println(pa.getTitle()+"  "+pa.getValue().size());
-        }
+//        for (PostureAnnotation pa : csvData) {
+//            System.out.println(pa.getTitle()+"  "+pa.getValue().size());
+//        }
 
         for (PostureAnnotation pa : csvData) {
             String title = pa.getTitle();

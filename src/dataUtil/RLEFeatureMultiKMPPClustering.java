@@ -35,7 +35,7 @@ public class RLEFeatureMultiKMPPClustering {
         try {
             List<RLEDataWrapper> clusterInput = new ArrayList<>();
 
-            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures.csv"), ',');
+            CSVReader csv = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_RLEFeatures.csv"), ',');
             String[] row;
             int count = 0;
             double[] mins = new double[11];
@@ -117,7 +117,7 @@ public class RLEFeatureMultiKMPPClustering {
         try {
             List<RLEDataWrapper> clusterInput = new ArrayList<>();
 
-            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures_MinMax.csv"), ',');
+            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures_EW_MinMax.csv"), ',');
             String[] row;
             int count = 0;
             double[] mins = new double[11];
@@ -167,7 +167,7 @@ public class RLEFeatureMultiKMPPClustering {
             int cutoff = Double.valueOf(count * 0.7).intValue();
             System.out.println(cutoff);
 
-            KMeansPlusPlusClusterer<RLEDataWrapper> clusterer = new KMeansPlusPlusClusterer<>(8, 1000);
+            KMeansPlusPlusClusterer<RLEDataWrapper> clusterer = new KMeansPlusPlusClusterer<>(4, 1000);
             MultiKMeansPlusPlusClusterer multi = new MultiKMeansPlusPlusClusterer(clusterer, 1000);
             List<CentroidCluster<RLEDataWrapper>> clusterResults = multi.cluster(clusterInput);
 

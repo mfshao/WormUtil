@@ -49,25 +49,29 @@ public class PostureCSVData {
             }
 //            StringBuilder sb = new StringBuilder();
             ArrayList<String> value = new ArrayList();
-            String pDescription = "";
-
+            String pDescription = row[53];
+            
+            int i = 0;
+            
             while (true) {
                 Integer posture = 0;
                 String description = "";
-
-                if (!row[34].equalsIgnoreCase("")){
-                    posture = Integer.parseInt(row[34]);
+                
+//                System.out.println(row.length);
+                
+                if (!row[36].equalsIgnoreCase("") && !row[36].equalsIgnoreCase("NA")){
+                    posture = Integer.parseInt(row[36]);
                 }
                 
-                if (!row[53].equalsIgnoreCase("")){
+                if (!row[52].equalsIgnoreCase("") && !row[53].equalsIgnoreCase("NA")){
                     description = row[53];
                 }
                 
                 if (pDescription.equalsIgnoreCase(description)){
                     value.add(Integer.toString(posture));
                 } else {
-                    if(!description.equalsIgnoreCase("")){
-                        data.csvData.add(new PostureAnnotation(description, value));
+                    if(!description.equalsIgnoreCase("NA")){
+                        data.csvData.add(new PostureAnnotation(pDescription, value));
                     }
                     value = new ArrayList();
                 }
@@ -79,6 +83,8 @@ public class PostureCSVData {
                 if (row == null) {
                     break;
                 }
+                
+                i++;
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();

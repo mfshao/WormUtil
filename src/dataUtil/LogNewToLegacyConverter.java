@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  */
 public class LogNewToLegacyConverter {
 
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\*****\\log";
+    static String PATH = "\\\\CDM-MEDIXSRV\\Nematodes\\data\\*****\\log";
 //    static String PATH = "D:\\log";
     static float PPS = 13.913f;
     static float PPUM = 0.07f;
@@ -141,10 +141,10 @@ public class LogNewToLegacyConverter {
     }
 
     public static void main(String[] args) throws IOException {
-        String catagories = "N2_nf";
-        int startCat = 20;
+        String catagories = "RIM_HR_nf";
+        int startCat = 1;
         int startFrame = 0;
-        int numInCat = 14;
+        int numInCat = 7;
 
         for (int i = startCat; i < (startCat + numInCat); i++) {
             String c = catagories + Integer.toString(i);

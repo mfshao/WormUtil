@@ -34,7 +34,7 @@ public class RLEFeatureKMPPClustering {
         try {
             List<RLEDataWrapper> clusterInput = new ArrayList<>();
 
-            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures.csv"), ',');
+            CSVReader csv = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_subs_RLEFeatures_MinMax.csv"), ',');
             String[] row;
             int count = 0;
             double[] mins = new double[11];
@@ -110,11 +110,11 @@ public class RLEFeatureKMPPClustering {
         }
     }
 
-    public static void performCombinedClustering() {
+    public static void performCombinedStopClustering() {
         try {
             List<RLEDataWrapper> clusterInput = new ArrayList<>();
 
-            CSVReader csv = new CSVReader(new FileReader("D:\\ContourAndSkel_output_RLEFeatures_MinMax.csv"), ',');
+            CSVReader csv = new CSVReader(new FileReader("D:\\Smooth_N2_nf4_subs_RLEFeatures_CombinedStop_MinMax.csv"), ',');
             String[] row;
             int count = 0;
             double[] mins = new double[11];
@@ -123,18 +123,6 @@ public class RLEFeatureKMPPClustering {
             
             while ((row = csv.readNext()) != null) {
                 String title = row[0];
-                if (title.contains("ReverseShort")) {
-                    title = "ReverseShort";
-                }
-                if (title.contains("ReverseLong")) {
-                    title = "ReverseLong";
-                }
-                if (title.contains("Forward")) {
-                    title = "Forward";
-                }
-                if (title.equalsIgnoreCase("Stopped-Stop")) {
-                    title = "Stop";
-                }
                 if (title.contains("Min")) {
                     for (int i = 1; i < row.length; i++) {
                         mins[i - 1] = Double.parseDouble(row[i]);
@@ -360,8 +348,8 @@ public class RLEFeatureKMPPClustering {
     }
 
     public static void main(String[] args) {
-//        performAllClustering();
-        performCombinedClustering();
+        performAllClustering();
+//        performCombinedStopClustering();
 //        performCombinedNoStopClustering();
     }
 }

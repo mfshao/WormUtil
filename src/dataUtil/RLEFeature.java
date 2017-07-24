@@ -23,6 +23,8 @@ import java.util.ArrayList;
  * @author MSHAO1
  */
 public class RLEFeature {
+    
+    private final int MAX_I = 8;
 
     private String state;
     private int[][] pMatrix;
@@ -69,14 +71,14 @@ public class RLEFeature {
     }
 
     private void calculatePMatrix() {
-        this.pMatrix = new int[5][maxCount];
+        this.pMatrix = new int[MAX_I][maxCount];
         for (RLEData r : rleList) {
             pMatrix[Integer.parseInt(r.getPosture())][r.getCount()]++;
         }
     }
 
     private void calculateNR() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_I; i++) {
             for (int j = 0; j < maxCount; j++) {
                 if (pMatrix[i][j] != 0) {
                     nr++;
@@ -104,7 +106,7 @@ public class RLEFeature {
     }
 
     public void calculateSRE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     sre += pMatrix[i-1][j-1] / Math.pow((double) j, 2.0);
@@ -115,7 +117,7 @@ public class RLEFeature {
     }
 
     public void calculateLRE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     lre += pMatrix[i-1][j-1] * Math.pow((double) j, 2.0);
@@ -126,7 +128,7 @@ public class RLEFeature {
     }
 
     public void calculateLARE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     lare += pMatrix[i-1][j-1] / Math.pow((double) i, 2.0);
@@ -137,7 +139,7 @@ public class RLEFeature {
     }
 
     public void calculateHARE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     hare += pMatrix[i-1][j-1] * Math.pow((double) i, 2.0);
@@ -148,7 +150,7 @@ public class RLEFeature {
     }
 
     public void calculateSRLAE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     srlae += pMatrix[i-1][j-1] / (Math.pow((double) i, 2.0) * Math.pow((double) j, 2.0));
@@ -159,7 +161,7 @@ public class RLEFeature {
     }
 
     public void calculateSRHAE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     srhae += (pMatrix[i-1][j-1] * Math.pow((double) i, 2.0)) / Math.pow((double) j, 2.0);
@@ -170,7 +172,7 @@ public class RLEFeature {
     }
     
     public void calculateLRLAE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     lrlae += (pMatrix[i-1][j-1] * Math.pow((double) j, 2.0)) / Math.pow((double) i, 2.0);
@@ -181,7 +183,7 @@ public class RLEFeature {
     }
     
     public void calculateLRHAE() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     lrhae += pMatrix[i-1][j-1] * Math.pow((double) i, 2.0) * Math.pow((double) j, 2.0);
@@ -192,7 +194,7 @@ public class RLEFeature {
     }
     
     public void calculateALN() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_I; i++) {
             for (int j = 1; j <= maxCount; j++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     aln += Math.pow((double) pMatrix[i-1][j-1], 2.0);
@@ -204,7 +206,7 @@ public class RLEFeature {
     
     public void calculateRLN() {
         for (int j = 1; j <= maxCount; j++) {
-            for (int i = 1; i <= 5; i++) {
+            for (int i = 1; i <= MAX_I; i++) {
                 if (pMatrix[i-1][j-1] != 0) {
                     rln += Math.pow((double) pMatrix[i-1][j-1], 2.0);
                 }
@@ -233,6 +235,23 @@ public class RLEFeature {
         outputList.add(Float.toString(rp));
         output = outputList.toArray(output);
         return output;
+    }
+    
+    public ArrayList<Float> getRawValues() {
+        ArrayList<Float> rawValueList = new ArrayList();
+        rawValueList.add(sre);
+        rawValueList.add(lre);
+        rawValueList.add(lare);
+        rawValueList.add(hare);
+        rawValueList.add(srlae);
+        rawValueList.add(srhae);
+        rawValueList.add(lrlae);
+        rawValueList.add(lrhae);
+        rawValueList.add(aln);
+        rawValueList.add(rln);
+        rawValueList.add(rp);
+        
+        return rawValueList;
     }
 
     public String getState() {

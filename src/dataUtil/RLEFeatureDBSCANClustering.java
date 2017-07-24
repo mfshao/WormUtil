@@ -166,7 +166,7 @@ public class RLEFeatureDBSCANClustering {
             int cutoff = Double.valueOf(count * 0.7).intValue();
             System.out.println(cutoff);
 
-            DBSCANClusterer<RLEDataWrapper> clusterer = new DBSCANClusterer<>(1000, 50);
+            DBSCANClusterer<RLEDataWrapper> clusterer = new DBSCANClusterer<>(10000, 2);
             List<Cluster<RLEDataWrapper>> clusterResults = clusterer.cluster(clusterInput);
 
 // output the clusters

@@ -32,13 +32,13 @@ import java.io.InputStreamReader;
 public class LogTxtToDatConverter {
 
     //static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\AIB_HR_nf11\\log";
-    static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\*****\\log";
+    static String PATH = "\\\\CDM-MEDIXSRV\\Nematodes\\data\\*****\\log";
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
-        String catagories = "che2_nf";
+        String catagories = "RIM_HR_nf";
         int startFrame = 0;
-        int numInCat = 10;
+        int numInCat = 7;
 
         for (int i = 1; i <= numInCat; i++) {
             String c = catagories + Integer.toString(i);
