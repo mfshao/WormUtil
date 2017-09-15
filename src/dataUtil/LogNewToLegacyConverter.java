@@ -141,10 +141,10 @@ public class LogNewToLegacyConverter {
     }
 
     public static void main(String[] args) throws IOException {
-        String catagories = "RIM_HR_nf";
-        int startCat = 1;
+        String catagories = "N2_HR_nf";
+        int startCat = 5;
         int startFrame = 0;
-        int numInCat = 7;
+        int numInCat = 1;
 
         for (int i = startCat; i < (startCat + numInCat); i++) {
             String c = catagories + Integer.toString(i);

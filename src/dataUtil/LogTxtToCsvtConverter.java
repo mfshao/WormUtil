@@ -16,12 +16,16 @@
  */
 package dataUtil;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -29,50 +33,34 @@ import java.io.InputStreamReader;
  *
  * @author Travis Shao
  */
-public class LogTxtToDatConverter {
+public class LogTxtToCsvtConverter {
 
     //static String PATH = "\\\\MEDIXSRV\\Nematodes\\data\\AIB_HR_nf11\\log";
     static String PATH = "\\\\CDM-MEDIXSRV\\Nematodes\\data\\*****\\log";
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
-        String catagories = "N2_HR_nf";
-        int startFrame = 0;
-        int numInCat = 5;
+        String catagories = "AIB_HR_nf";
+        int startNumber = 10;
+        int numInCat = 1;
 
-        for (int i = 5; i <= numInCat; i++) {
+        for (int i = startNumber; i < startNumber+numInCat; i++) {
             String c = catagories + Integer.toString(i);
-            String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
             String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";
+            String CSVLoc = PATH.replace("*****", c) + "\\log_csv.csv";
             try {
-                DataOutputStream os = new DataOutputStream(new FileOutputStream(new File(trackerDatPath)));
+                CSVWriter csvw = new CSVWriter(new FileWriter(CSVLoc));
 
                 BufferedReader trackerBr = new BufferedReader(new InputStreamReader(new FileInputStream(trackerLogPath)));
                 String logLine;
-                int frame = 0;
-                long timeStamp = 0;
-                int x = 0;
-                int y = 0;
-                int isMoving = 0;
 
                 while ((logLine = trackerBr.readLine()) != null) {
                     String[] logLineSplit = logLine.split("\\s+");
-                    frame = Integer.parseInt(logLineSplit[0]);
-                    timeStamp = Long.parseLong(logLineSplit[1]);
-                    x = Integer.parseInt(logLineSplit[2]);
-                    y = Integer.parseInt(logLineSplit[3]);
-                    isMoving = Integer.parseInt(logLineSplit[4]);
-
-                    os.writeInt(frame);
-                    os.writeLong(timeStamp);
-                    os.writeInt(x);
-                    os.writeInt(y);
-                    os.writeInt(isMoving);
-                    os.flush(); 
- //               System.out.println(frame);
+                    
+                    csvw.writeNext(logLineSplit);
                 }
-                System.out.println(c + " has finished TXT to DAT parsing");
-                os.close();
+                System.out.println(c + " has finished TXT to CSV parsing");
+                csvw.close();
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
