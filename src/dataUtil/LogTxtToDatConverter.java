@@ -36,11 +36,12 @@ public class LogTxtToDatConverter {
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
-        String catagories = "N2_HR_nf";
+        String catagories = "AIY_HR_f";
+        int startCat = 5;
         int startFrame = 0;
-        int numInCat = 5;
+        int numInCat = 1;
 
-        for (int i = 5; i <= numInCat; i++) {
+        for (int i = startCat; i < (startCat + numInCat); i++) {
             String c = catagories + Integer.toString(i);
             String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
             String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";
@@ -69,7 +70,7 @@ public class LogTxtToDatConverter {
                     os.writeInt(y);
                     os.writeInt(isMoving);
                     os.flush(); 
- //               System.out.println(frame);
+                System.out.println(frame);
                 }
                 System.out.println(c + " has finished TXT to DAT parsing");
                 os.close();

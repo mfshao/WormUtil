@@ -40,14 +40,14 @@ public class LogTxtToCsvtConverter {
 //    static String PATH = "C:\\Users\\Travis Shao\\Desktop";
 
     public static void main(String[] args) throws IOException {
-        String catagories = "AIB_HR_nf";
-        int startNumber = 10;
+        String catagories = "N2_nf";
+        int startNumber = 4;
         int numInCat = 1;
 
         for (int i = startNumber; i < startNumber+numInCat; i++) {
             String c = catagories + Integer.toString(i);
-            String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";
-            String CSVLoc = PATH.replace("*****", c) + "\\log_csv.csv";
+            String trackerLogPath = PATH.replace("*****", c) + "\\feature.log";
+            String CSVLoc = PATH.replace("*****", c) + "\\feature_csv.csv";
             try {
                 CSVWriter csvw = new CSVWriter(new FileWriter(CSVLoc));
 

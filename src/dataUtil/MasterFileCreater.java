@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,10 +23,10 @@ public class MasterFileCreater {
     static String RONPATH = "\\\\CDM-MEDIXSRV\\Nematodes\\data\\*****\\matlab";
     static String KYLEPATH = "\\\\CDM-MEDIXSRV\\Nematodes\\data\\*****\\data";
     static String OUTPUTPATH = "\\\\CDM-MEDIXSRV\\Nematodes\\data\\*****\\data";
-    static String CATAGORYNAME = "N2_f1";
+    static String CATAGORYNAME = "che2_HR_f2";
     
     public enum MasterFileHeaders {
-        FrameNum, ElapsedTimeInLogFile, DeltaTimeInLogFile, CentroidX, CentroidY, Speed, Acceleration, Angle, AngularVelocity, ElapsedTimeInVideo, Resol, CameraStartRow, CameraStartCol, CameraStepRows, CameraStepCols, CameraOffsetRows, CameraOffsetCols, CropOffsetRows, CropOffsetCols, TotalOffsetRows, TotalOffsetCols, LclCentroidRow, LclCentroidCol, GblCentroidRow, GblCentroidCol, Area, MajorAxisLength, MinorAxisLength, Elongation, ComptFactor, Heywood, Hydraulic, RectBigSide, RectRatio, Perimeter, Ixx, Iyy, Ixy, MaxWidth, NumRows, NumCols, Posture, SkewerAngle, IsLoop, Length, HeadRow, HeadCol, TailRow, TailCol, HeadCurvPtRow, HeadCurvPtCol, TailCurvPtRow, TailCurvPtCol, CurvHead, CurvTail, IntH, IntT, SktAmpRatio, SktCmptFactor, SktElgFactor, SktIxx, SktIyy, SktAglAve, Xsym, Ysym, XYsym, TrackAmplitude, TrackPeriod, SktvAglAve, SktvDisAveToLength, SktvDisMaxToLength, SktvDisMinToLength, SktvAglMax, SktpMovement, DirectionCode, GblCentroidColNew, GblCentroidRowNew, DeltaTimeInVideo, DeltaX, DeltaY, DeltaDist, VectorAngle, InstantVelocity, InstantAccel, CumDist, Range
+        FrameNum, ElapsedTimeInLogFile, DeltaTimeInLogFile, CentroidX, CentroidY, Speed, Acceleration, Angle, AngularVelocity, ElapsedTimeInVideo, NumRows, NumCols, Resol, CameraStartRow, CameraStartCol, CameraStepRows, CameraStepCols, CameraOffsetRows, CameraOffsetCols, CropOffsetRows, CropOffsetCols, TotalOffsetRows, TotalOffsetCols, LclCentroidRow, LclCentroidCol, GblCentroidRow, GblCentroidCol, Area, MajorAxisLength, MinorAxisLength, Elongation, ComptFactor, Heywood, Hydraulic, RectBigSide, RectRatio, Perimeter, Ixx, Iyy, Ixy, MaxWidth, Posture, SkewerAngle, IsLoop, Length, HeadRow, HeadCol, TailRow, TailCol, HeadCurvPtRow, HeadCurvPtCol, TailCurvPtRow, TailCurvPtCol, CurvHead, CurvTail, IntH, IntT, SkelNumPixels, LengthToPixels, Fatness, Thickness, SegStatus, SktAmpRatio, SktCmptFactor, SktElgFactor, SktIxx, SktIyy, SktAglAve, Xsym, Ysym, XYsym, TrackAmplitude, TrackPeriod, SktvAglAve, SktvDisAveToLength, SktvDisMaxToLength, SktvDisMinToLength, SktvAglMax, SktpMovement, DirectionCode, GblCentroidColNew, GblCentroidRowNew, DeltaTimeInVideo, DeltaX, DeltaY, DeltaDist, VectorAngle, InstantVelocity, InstantAccel, CumDist, Range
     }
 
     public static void main(String[] args) {
@@ -36,6 +35,7 @@ public class MasterFileCreater {
         String masterFilePath = OUTPUTPATH.replace("*****", CATAGORYNAME) + "\\masterFile.csv";
 
         try {
+            boolean isFirstTime =  true;
             final Appendable masterFileWriter = new FileWriter(masterFilePath);
             final CSVPrinter printer;
             printer = CSVFormat.DEFAULT.withHeader(MasterFileHeaders.class).print(masterFileWriter);
@@ -59,6 +59,12 @@ public class MasterFileCreater {
             System.out.println("====== Start of creating master file ======");
             while(pssDataRecordsItr.hasNext() && trajectoryDataRecordsItr.hasNext()) {
                 CSVRecord pssDataRecord = pssDataRecordsItr.next();
+                if(isFirstTime && (pssDataRecord.size() != 84)) {
+                    System.out.println("Old version PSS file found! No good!");
+                    System.out.println("The length of the PSS is " + pssDataRecord.size());
+                    return;
+                }
+                isFirstTime = false;
                 CSVRecord trajectoryDataRecord = trajectoryDataRecordsItr.next();
                 
                 int pssDataRecordFrameID = Integer.parseInt(pssDataRecord.get(0)) - 1;
