@@ -141,8 +141,8 @@ public class LogNewToLegacyConverter {
     }
 
     public static void main(String[] args) throws IOException {
-        String catagories = "AIY_HR_f";
-        int startCat = 5;
+        String catagories = "N2_nfn";
+        int startCat = 1;
         int startFrame = 0;
         int numInCat = 1;
 

@@ -35,7 +35,7 @@ public class LogDatToTxtConverter {
 
     public static void main(String[] args) throws IOException {
         String catagories = "N2_nf";
-        int startNum = 30;
+        int startNum = 32;
         int numInCat = 1;
         
         for (int i = startNum; i < startNum+numInCat; i++) {
