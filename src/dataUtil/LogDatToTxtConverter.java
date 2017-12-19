@@ -37,35 +37,35 @@ public class LogDatToTxtConverter {
         String catagories = "N2_nf";
         int startNum = 32;
         int numInCat = 1;
-        
-        for (int i = startNum; i < startNum+numInCat; i++) {
+
+        for (int i = startNum; i < startNum + numInCat; i++) {
             String c = catagories + Integer.toString(i);
             String trackerDatPath = PATH.replace("*****", c) + "\\log.dat";
             String trackerLogPath = PATH.replace("*****", c) + "\\log.txt";
-        try {
-            DataInputStream is = new DataInputStream(new FileInputStream(new File(trackerDatPath)));
+            try {
+                DataInputStream is = new DataInputStream(new FileInputStream(new File(trackerDatPath)));
 
-            FileWriter fw = new FileWriter(trackerLogPath);
-            int frame = 0;
-            long timeStamp = 0;
-            int x = 0;
-            int y = 0;
-            int isMoving = 0;
+                FileWriter fw = new FileWriter(trackerLogPath);
+                int frame = 0;
+                long timeStamp = 0;
+                int x = 0;
+                int y = 0;
+                int isMoving = 0;
 
-            while (is.available() > 0) {
-                frame = is.readInt();
-                timeStamp = is.readLong();
-                x = is.readInt();
-                y = is.readInt();
-                isMoving = is.readInt();
+                while (is.available() > 0) {
+                    frame = is.readInt();
+                    timeStamp = is.readLong();
+                    x = is.readInt();
+                    y = is.readInt();
+                    isMoving = is.readInt();
 
-                fw.write(String.format("%07d %d %d %d %d%n", frame, timeStamp, x, y, isMoving));
+                    fw.write(String.format("%07d %d %d %d %d%n", frame, timeStamp, x, y, isMoving));
+                }
+                System.out.println(c + " has finished DAT to TXT parsing");
+                fw.close();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
-            System.out.println(c + " has finished DAT to TXT parsing");
-            fw.close();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
         }
-    }
     }
 }
